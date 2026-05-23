@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://lm6y228w5qbf" path="res://addons/2026_05_22_gdp_quad_painting/script/relocation/quad_paint_node_to_cursor_info.gd" id="5_bf3yq"]
 [ext_resource type="Shader" uid="uid://ctlow4ll13gw3" path="res://addons/2026_05_22_gdp_quad_painting/script/gpu_drawing/gpu_paint.gdshader" id="6_1uiou"]
 [ext_resource type="Resource" uid="uid://bhs7y4e4lyfdw" path="res://addons/2026_05_22_gdp_quad_painting/resource/res_cursor_test_position.tres" id="6_4ag7v"]
+[ext_resource type="Script" uid="uid://c6fabvtfl6r1i" path="res://addons/2026_05_22_gdp_quad_painting/script/relocation/quad_paint_node_to_color_pixel.gd" id="7_4ag7v"]
 
 [sub_resource type="Animation" id="Animation_mts7y"]
 length = 0.001
@@ -77,6 +78,14 @@ albedo_color = Color(1, 0, 0, 0.6431373)
 
 [sub_resource type="QuadMesh" id="QuadMesh_qme0d"]
 
+[sub_resource type="SphereMesh" id="SphereMesh_bf3yq"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ag7v"]
+albedo_color = Color(1, 1, 0, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1uiou"]
+albedo_color = Color(1, 1, 0, 1)
+
 [node name="DemoDrawOnTexture" type="Node3D" unique_id=1670961638]
 
 [node name="QuadPaintWithBrush" type="Node3D" parent="." unique_id=1617209982]
@@ -145,6 +154,27 @@ brush_color_true = Color(0, 0.827451, 0, 1)
 brush_color_false = Color(0.9411765, 1, 0, 0)
 metadata/_custom_type_script = "uid://cpvbpsgwehur"
 
+[node name="Timer" type="Timer" parent="QuadPaintWithBrush/Code/GPU Brush Painter" unique_id=250224421]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="QuadPaintNodeToColorPixel Left" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1417158732 node_paths=PackedStringArray("node_point_anchor", "node_radius_anchor", "gpu_brush_painter", "quad_relocation")]
+script = ExtResource("7_4ag7v")
+node_point_anchor = NodePath("../../../LineTracker/LeftAnchor")
+node_radius_anchor = NodePath("../../../LineTracker/LeftAnchor/Node3D")
+gpu_brush_painter = NodePath("../GPU Brush Painter")
+quad_relocation = NodePath("../Relocation From Cursors")
+metadata/_custom_type_script = "uid://c6fabvtfl6r1i"
+
+[node name="QuadPaintNodeToColorPixel Right" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1806023457 node_paths=PackedStringArray("node_point_anchor", "node_radius_anchor", "gpu_brush_painter", "quad_relocation")]
+script = ExtResource("7_4ag7v")
+node_point_anchor = NodePath("../../../LineTracker/RightAnchor")
+node_radius_anchor = NodePath("../../../LineTracker/RightAnchor/Node3D")
+gpu_brush_painter = NodePath("../GPU Brush Painter")
+quad_relocation = NodePath("../Relocation From Cursors")
+metadata/_custom_type_script = "uid://c6fabvtfl6r1i"
+
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1629297920]
 transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 1, 0)
 projection = 1
@@ -166,4 +196,28 @@ offset_bottom = -0.2000122
 expand_mode = 3
 stretch_mode = 4
 
+[node name="LineTracker" type="Node3D" parent="." unique_id=113985931]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3561287, 0.014404297, 0.39331055)
+
+[node name="LeftAnchor" type="Node3D" parent="LineTracker" unique_id=494574728]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, -0.01, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="LineTracker/LeftAnchor" unique_id=1580928150]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LineTracker/LeftAnchor" unique_id=1995328592]
+mesh = SubResource("SphereMesh_bf3yq")
+surface_material_override/0 = SubResource("StandardMaterial3D_4ag7v")
+
+[node name="RightAnchor" type="Node3D" parent="LineTracker" unique_id=1543454492]
+transform = Transform3D(0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0.01, 0, 0)
+
+[node name="Node3D" type="Node3D" parent="LineTracker/RightAnchor" unique_id=29793760]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="LineTracker/RightAnchor" unique_id=1000501192]
+mesh = SubResource("SphereMesh_bf3yq")
+surface_material_override/0 = SubResource("StandardMaterial3D_1uiou")
+
 [connection signal="on_cursor_info_updated" from="QuadPaintWithBrush/Code/Cursor To Resource Info" to="QuadPaintWithBrush/Code/GPU Brush Painter" method="draw_from_resoruce"]
+[connection signal="timeout" from="QuadPaintWithBrush/Code/GPU Brush Painter/Timer" to="QuadPaintWithBrush/Code/GPU Brush Painter" method="cache_texture_to_image_save"]
