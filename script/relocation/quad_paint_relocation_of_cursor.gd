@@ -27,7 +27,7 @@ func _process(delta: float) -> void:
 func _refresh_values():
 	top_right_local_position = relocate_point_from_node_point(down_left_anchor, top_right_anchor)
 	width_distance = top_right_local_position.x
-	height_distance = top_right_local_position.y
+	height_distance = top_right_local_position.z
 
 	
 
@@ -37,7 +37,7 @@ func get_local_position_of_point(global_position:Vector3)->Vector3:
 
 func get_local_percent_position_of_point_based_on_width_lrdt(global_position:Vector3)->Vector3:
 	var local_position = relocate_point(down_left_anchor, global_position)
-	return Vector3(local_position.x / width_distance, local_position.y / width_distance, local_position.z/ width_distance)
+	return Vector3(local_position.x / width_distance, local_position.y , local_position.z/ width_distance)
 
 func get_local_percent_position_of_point_based_on_width_lrtd(global_position:Vector3)->Vector3:
 	var percent_point =get_local_percent_position_of_point_based_on_width_lrdt(global_position)

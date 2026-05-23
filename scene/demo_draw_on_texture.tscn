@@ -124,6 +124,7 @@ down_left_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/DownLeftAnc
 top_right_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/TopRightAnchor")
 top_right_local_position = Vector3(1, 0, 1)
 width_distance = 1.0
+height_distance = 1.0
 metadata/_custom_type_script = "uid://djlmlr4fyqpa5"
 
 [node name="Cursor To Resource Info" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1133654043 node_paths=PackedStringArray("cursor_quad", "node_center_anchor", "node_radius_anchor")]
@@ -137,14 +138,16 @@ node_radius_anchor = NodePath("../../BrushSize/Radius")
 script = ExtResource("5_4ag7v")
 apply_to_material = Array[StandardMaterial3D]([ExtResource("1_4ag7v")])
 apply_to_color_rect = [NodePath("../../../CanvasLayer/TextureRect")]
-edge_softness = 0.005
+edge_softness = 0.0
 shader = ExtResource("6_1uiou")
 brush_is_true = true
-brush_color_false = Color(0, 0, 0, 1)
+brush_color_true = Color(0, 0.827451, 0, 1)
+brush_color_false = Color(0.9411765, 1, 0, 0)
 metadata/_custom_type_script = "uid://cpvbpsgwehur"
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1629297920]
-transform = Transform3D(1, 0, 0, 0, 0.7253143, 0.68841785, 0, -0.68841785, 0.7253143, 0, 0.8009033, 0.9593506)
+transform = Transform3D(1, 0, 0, 0, -4.3711385e-08, 0.99999994, 0, -0.99999994, -4.3711385e-08, 0, 1, 0)
+projection = 1
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D" unique_id=1449226594]
 

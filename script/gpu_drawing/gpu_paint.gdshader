@@ -9,17 +9,36 @@ uniform float edge_softness = 0.015;
 
 void fragment() {
 
-	vec4 prev = texture(current_canvas, UV);
+    vec4 prev = texture(current_canvas, UV);
 
-	float dist = length(UV - brush_center);
+    float dist = length(UV - brush_center);
 
-	float circle = 1.0 - smoothstep(
-		brush_radius - edge_softness,
-		brush_radius + edge_softness,
-		dist
-	);
+    float circle = 1.0 - smoothstep(
+        brush_radius - edge_softness,
+        brush_radius + edge_softness,
+        dist
+    );
 
-	vec3 result = mix(prev.rgb, brush_color.rgb, circle * brush_color.a);
+    // Blend RGB
+    vec3 result_rgb = mix(
+        prev.rgb,
+        brush_color.rgb,
+        circle * brush_color.a
+    );
 
-	COLOR = vec4(result, 1.0);
+    float result_alpha;
+
+    // If previous pixel is transparent, keep it transparent
+    if (prev.a <= 0.0) {
+        result_alpha = 0.0;
+    } else {
+        // Otherwise blend alpha normally
+        result_alpha = mix(
+            prev.a,
+            brush_color.a,
+            circle
+        );
+    }
+
+    COLOR = vec4(result_rgb, result_alpha);
 }
