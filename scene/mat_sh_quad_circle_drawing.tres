@@ -1,6 +1,6 @@
 [gd_resource type="ShaderMaterial" format=3 uid="uid://cdmx4aq7cfch6"]
 
-[ext_resource type="Shader" uid="uid://ereuh6aihvrg" path="res://addons/2026_05_22_gdp_quad_painting/scene/draw_cusor_on_texture.gdshader" id="1_g8avb"]
+[ext_resource type="Shader" uid="uid://ereuh6aihvrg" path="res://addons/2026_05_22_gdp_quad_painting/shader/draw_cusor_on_texture.gdshader" id="1_g8avb"]
 
 [resource]
 render_priority = 0

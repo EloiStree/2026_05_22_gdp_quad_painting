@@ -1,11 +1,11 @@
 [gd_scene format=3 uid="uid://b2jxigg2ul3af"]
 
-[ext_resource type="Material" uid="uid://bjdnqko8aavrj" path="res://addons/2026_05_22_gdp_quad_painting/scene/mat_standard_draw.tres" id="1_4ag7v"]
-[ext_resource type="Script" uid="uid://djlmlr4fyqpa5" path="res://addons/2026_05_22_gdp_quad_painting/script/quad_paint_relocation_of_cursor.gd" id="1_mts7y"]
-[ext_resource type="Script" uid="uid://cpvbpsgwehur" path="res://addons/2026_05_22_gdp_quad_painting/script/with_gpu/GpuBrushPainter.gd" id="5_4ag7v"]
-[ext_resource type="Script" uid="uid://lm6y228w5qbf" path="res://addons/2026_05_22_gdp_quad_painting/script/quad_paint_node_to_cursor_info.gd" id="5_bf3yq"]
-[ext_resource type="Shader" uid="uid://ctlow4ll13gw3" path="res://addons/2026_05_22_gdp_quad_painting/script/with_gpu/gpu_paint.gdshader" id="6_1uiou"]
-[ext_resource type="Resource" uid="uid://bhs7y4e4lyfdw" path="res://addons/2026_05_22_gdp_quad_painting/res_cursor_test_position.tres" id="6_4ag7v"]
+[ext_resource type="Material" uid="uid://bjdnqko8aavrj" path="res://addons/2026_05_22_gdp_quad_painting/material/mat_standard_draw.tres" id="1_4ag7v"]
+[ext_resource type="Script" uid="uid://djlmlr4fyqpa5" path="res://addons/2026_05_22_gdp_quad_painting/script/relocation/quad_paint_relocation_of_cursor.gd" id="1_mts7y"]
+[ext_resource type="Script" uid="uid://cpvbpsgwehur" path="res://addons/2026_05_22_gdp_quad_painting/script/gpu_drawing/quad_paint_gpu_brush_painter.gd" id="5_4ag7v"]
+[ext_resource type="Script" uid="uid://lm6y228w5qbf" path="res://addons/2026_05_22_gdp_quad_painting/script/relocation/quad_paint_node_to_cursor_info.gd" id="5_bf3yq"]
+[ext_resource type="Shader" uid="uid://ctlow4ll13gw3" path="res://addons/2026_05_22_gdp_quad_painting/script/gpu_drawing/gpu_paint.gdshader" id="6_1uiou"]
+[ext_resource type="Resource" uid="uid://bhs7y4e4lyfdw" path="res://addons/2026_05_22_gdp_quad_painting/resource/res_cursor_test_position.tres" id="6_4ag7v"]
 
 [sub_resource type="Animation" id="Animation_mts7y"]
 length = 0.001
@@ -116,11 +116,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
 [node name="TopRightAnchor" type="Node3D" parent="QuadPaintWithBrush/QuadSize/QuadPaint/RotatedQuad1x1" unique_id=580993360]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
 
-[node name="SubViewport" type="SubViewport" parent="QuadPaintWithBrush" unique_id=2098966879]
-
 [node name="Code" type="Node" parent="QuadPaintWithBrush" unique_id=1288341206]
 
-[node name="QuadPaintRelocationOfCursor" type="Node" parent="QuadPaintWithBrush/Code" unique_id=2145269004 node_paths=PackedStringArray("down_left_anchor", "top_right_anchor")]
+[node name="Relocation From Cursors" type="Node" parent="QuadPaintWithBrush/Code" unique_id=2145269004 node_paths=PackedStringArray("down_left_anchor", "top_right_anchor")]
 script = ExtResource("1_mts7y")
 down_left_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/DownLeftAnchor")
 top_right_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/TopRightAnchor")
@@ -131,14 +129,18 @@ metadata/_custom_type_script = "uid://djlmlr4fyqpa5"
 [node name="Cursor To Resource Info" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1133654043 node_paths=PackedStringArray("cursor_quad", "node_center_anchor", "node_radius_anchor")]
 script = ExtResource("5_bf3yq")
 cursor_info = ExtResource("6_4ag7v")
-cursor_quad = NodePath("../QuadPaintRelocationOfCursor")
+cursor_quad = NodePath("../Relocation From Cursors")
 node_center_anchor = NodePath("../../BrushSize/Center")
 node_radius_anchor = NodePath("../../BrushSize/Radius")
 
-[node name="GPUBrushPainter" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1388911229]
+[node name="GPU Brush Painter" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1388911229 node_paths=PackedStringArray("apply_to_color_rect")]
 script = ExtResource("5_4ag7v")
+apply_to_material = Array[StandardMaterial3D]([ExtResource("1_4ag7v")])
+apply_to_color_rect = [NodePath("../../../CanvasLayer/TextureRect")]
+edge_softness = 0.005
 shader = ExtResource("6_1uiou")
-debug_material = ExtResource("1_4ag7v")
+brush_is_true = true
+brush_color_false = Color(0, 0, 0, 1)
 metadata/_custom_type_script = "uid://cpvbpsgwehur"
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1629297920]
@@ -161,4 +163,4 @@ offset_bottom = -0.2000122
 expand_mode = 3
 stretch_mode = 4
 
-[connection signal="on_cursor_info_updated" from="QuadPaintWithBrush/Code/Cursor To Resource Info" to="QuadPaintWithBrush/Code/GPUBrushPainter" method="draw_from_resoruce"]
+[connection signal="on_cursor_info_updated" from="QuadPaintWithBrush/Code/Cursor To Resource Info" to="QuadPaintWithBrush/Code/GPU Brush Painter" method="draw_from_resoruce"]

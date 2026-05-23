@@ -1,14 +1,15 @@
+class_name QuadPaintCursorToRelocatedInfo
 extends Node
 
 
 signal on_cursor_info_updated(resource_ref:QuadPaintRelocationInfoOfGivenCursor)
 
 @export var cursor_info: SphereCursorPositionInfo
-
 @export var cursor_quad: QuadPaintRelocationInfoOfGivenCursor
 @export var node_center_anchor:Node3D
 @export var node_radius_anchor:Node3D
 @export var position:Vector3
+
 
 func _process(delta: float) -> void:
 	if cursor_info and cursor_quad and node_center_anchor and node_radius_anchor:

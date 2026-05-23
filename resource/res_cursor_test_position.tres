@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SphereCursorPositionInfo" format=3 uid="uid://bhs7y4e4lyfdw"]
 
-[ext_resource type="Script" uid="uid://il75ugscqp7j" path="res://addons/2026_05_22_gdp_quad_painting/script/quad_paint_cursor_info_resource.gd" id="1_irpf0"]
+[ext_resource type="Script" uid="uid://il75ugscqp7j" path="res://addons/2026_05_22_gdp_quad_painting/script/relocation/quad_paint_cursor_info_resource.gd" id="1_irpf0"]
 
 [resource]
 script = ExtResource("1_irpf0")
