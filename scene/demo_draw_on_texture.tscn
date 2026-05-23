@@ -1,0 +1,164 @@
+[gd_scene format=3 uid="uid://b2jxigg2ul3af"]
+
+[ext_resource type="Material" uid="uid://bjdnqko8aavrj" path="res://addons/2026_05_22_gdp_quad_painting/scene/mat_standard_draw.tres" id="1_4ag7v"]
+[ext_resource type="Script" uid="uid://djlmlr4fyqpa5" path="res://addons/2026_05_22_gdp_quad_painting/script/quad_paint_relocation_of_cursor.gd" id="1_mts7y"]
+[ext_resource type="Script" uid="uid://cpvbpsgwehur" path="res://addons/2026_05_22_gdp_quad_painting/script/with_gpu/GpuBrushPainter.gd" id="5_4ag7v"]
+[ext_resource type="Script" uid="uid://lm6y228w5qbf" path="res://addons/2026_05_22_gdp_quad_painting/script/quad_paint_node_to_cursor_info.gd" id="5_bf3yq"]
+[ext_resource type="Shader" uid="uid://ctlow4ll13gw3" path="res://addons/2026_05_22_gdp_quad_painting/script/with_gpu/gpu_paint.gdshader" id="6_1uiou"]
+[ext_resource type="Resource" uid="uid://bhs7y4e4lyfdw" path="res://addons/2026_05_22_gdp_quad_painting/res_cursor_test_position.tres" id="6_4ag7v"]
+
+[sub_resource type="Animation" id="Animation_mts7y"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BrushSize:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.43057275, 0.010864258, -0.39308786)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BrushSize:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.1, 0.1, 0.1)]
+}
+
+[sub_resource type="Animation" id="Animation_3ho4t"]
+resource_name = "left_right"
+length = 4.0666666
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("BrushSize:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.07, 4.0666666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.43057275, 0.010864258, -0.39308786), Vector3(-0.3082273, 0.010864258, -0.11708689), Vector3(0.5183109, 0.056762695, 0.5199982)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("BrushSize:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1.07, 4.0666666),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.1, 0.1, 0.1), Vector3(0.58, 0.58, 0.58), Vector3(0.13, 0.13, 0.13)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ql5tw"]
+_data = {
+&"RESET": SubResource("Animation_mts7y"),
+&"left_right": SubResource("Animation_3ho4t")
+}
+
+[sub_resource type="SphereMesh" id="SphereMesh_qme0d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mts7y"]
+transparency = 1
+albedo_color = Color(1, 0, 0, 0.6431373)
+
+[sub_resource type="QuadMesh" id="QuadMesh_qme0d"]
+
+[node name="DemoDrawOnTexture" type="Node3D" unique_id=1670961638]
+
+[node name="QuadPaintWithBrush" type="Node3D" parent="." unique_id=1617209982]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="QuadPaintWithBrush" unique_id=497095634]
+libraries/ = SubResource("AnimationLibrary_ql5tw")
+autoplay = &"left_right"
+
+[node name="BrushSize" type="Node3D" parent="QuadPaintWithBrush" unique_id=1155303624]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.43057275, 0.010864258, -0.39308786)
+
+[node name="Mesh" type="Node3D" parent="QuadPaintWithBrush/BrushSize" unique_id=208061445]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="QuadPaintWithBrush/BrushSize/Mesh" unique_id=1212909850]
+mesh = SubResource("SphereMesh_qme0d")
+surface_material_override/0 = SubResource("StandardMaterial3D_mts7y")
+
+[node name="Center" type="Node3D" parent="QuadPaintWithBrush/BrushSize" unique_id=4331233]
+
+[node name="Radius" type="Node3D" parent="QuadPaintWithBrush/BrushSize" unique_id=1994227406]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+
+[node name="QuadSize" type="Node3D" parent="QuadPaintWithBrush" unique_id=299121187]
+
+[node name="QuadPaint" type="Node3D" parent="QuadPaintWithBrush/QuadSize" unique_id=1279813816]
+
+[node name="RotatedQuad1x1" type="Node3D" parent="QuadPaintWithBrush/QuadSize/QuadPaint" unique_id=890424720]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="QuadPaintWithBrush/QuadSize/QuadPaint/RotatedQuad1x1" unique_id=873231624]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("QuadMesh_qme0d")
+surface_material_override/0 = ExtResource("1_4ag7v")
+
+[node name="DownLeftAnchor" type="Node3D" parent="QuadPaintWithBrush/QuadSize/QuadPaint/RotatedQuad1x1" unique_id=1038350632]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
+
+[node name="TopRightAnchor" type="Node3D" parent="QuadPaintWithBrush/QuadSize/QuadPaint/RotatedQuad1x1" unique_id=580993360]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
+
+[node name="SubViewport" type="SubViewport" parent="QuadPaintWithBrush" unique_id=2098966879]
+
+[node name="Code" type="Node" parent="QuadPaintWithBrush" unique_id=1288341206]
+
+[node name="QuadPaintRelocationOfCursor" type="Node" parent="QuadPaintWithBrush/Code" unique_id=2145269004 node_paths=PackedStringArray("down_left_anchor", "top_right_anchor")]
+script = ExtResource("1_mts7y")
+down_left_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/DownLeftAnchor")
+top_right_anchor = NodePath("../../QuadSize/QuadPaint/RotatedQuad1x1/TopRightAnchor")
+top_right_local_position = Vector3(1, 0, 1)
+width_distance = 1.0
+metadata/_custom_type_script = "uid://djlmlr4fyqpa5"
+
+[node name="Cursor To Resource Info" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1133654043 node_paths=PackedStringArray("cursor_quad", "node_center_anchor", "node_radius_anchor")]
+script = ExtResource("5_bf3yq")
+cursor_info = ExtResource("6_4ag7v")
+cursor_quad = NodePath("../QuadPaintRelocationOfCursor")
+node_center_anchor = NodePath("../../BrushSize/Center")
+node_radius_anchor = NodePath("../../BrushSize/Radius")
+
+[node name="GPUBrushPainter" type="Node" parent="QuadPaintWithBrush/Code" unique_id=1388911229]
+script = ExtResource("5_4ag7v")
+shader = ExtResource("6_1uiou")
+debug_material = ExtResource("1_4ag7v")
+metadata/_custom_type_script = "uid://cpvbpsgwehur"
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1629297920]
+transform = Transform3D(1, 0, 0, 0, 0.7253143, 0.68841785, 0, -0.68841785, 0.7253143, 0, 0.8009033, 0.9593506)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Camera3D" unique_id=1449226594]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=161796681]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer" unique_id=1464620654]
+anchors_preset = -1
+anchor_left = 0.039
+anchor_top = 0.069000006
+anchor_right = 0.186
+anchor_bottom = 0.316
+offset_left = -0.20000076
+offset_top = -0.05000305
+offset_right = 0.19999695
+offset_bottom = -0.2000122
+expand_mode = 3
+stretch_mode = 4
+
+[connection signal="on_cursor_info_updated" from="QuadPaintWithBrush/Code/Cursor To Resource Info" to="QuadPaintWithBrush/Code/GPUBrushPainter" method="draw_from_resoruce"]
